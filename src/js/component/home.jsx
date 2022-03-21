@@ -62,8 +62,12 @@ const Home = () => {
 	// funcion para eliminar tasks de api (PUT)----------------------------------------------------------------
 	function delTask(index) {
 		if (index > -1) {
-			//REVISARRRRRRRRRRRRRRRRR
-			const filterData = task.filter((item) => item !== task[index]);
+			//recibe array de estado task, recorre cada elemento de ese array task y lo compara con el index actual
+			//retorna array de task sin la tarea con index = item
+			const filterData = task.filter(
+				(itemActual) => itemActual !== task[index]
+			);
+			console.log("item", index);
 			setTask(filterData);
 			putData(filterData);
 		}
