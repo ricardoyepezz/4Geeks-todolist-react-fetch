@@ -25,22 +25,29 @@ const Home = () => {
 
 	// funcion para agregar tasks a api (PUT)----------------------------------------------------------------
 	const addTask = (e) => {
+		//si pulso enter al introducir texto en input agrega value a label y false a done
+		//const addNewTask = { label: e.target.value, done: false };
+		//luego concatena nuevo array addNewTask en mi estado
+		//let newArray = task.concat(addNewTask);
+		//ejecuta metodo PUT con nuevo array (agrega nuevo array a api)
 		if (e.key === "Enter" && e.target.value !== "") {
-			//si pulso enter al introducir texto en input agrega value a label y false a done
-			//const addNewTask = { label: e.target.value, done: false };
-			//luego concatena nuevo array addNewTask en mi estado
-			//let newArray = task.concat(addNewTask);
-			//ejecuta metodo PUT con nuevo array (agrega nuevo array a api)
+			e.preventDefault();
 			setTask([...task, { label: e.target.value, done: false }]);
 			let newArray = [...task, { label: e.target.value, done: false }];
 			putData(newArray);
 			//deja en blanco el input
-			e.target.value = "";
+			//e.target.value = "";
 		}
 	};
-	console.log(task);
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		setTask([...task, { label: e.target.value, done: false }]);
+		let newArray = [...task, { label: e.target.value, done: false }];
+		putData(newArray);
+	};
+
 	const putData = (newArray) => {
-		console.log("putData", task);
 		let requestOptions = {
 			method: "PUT",
 			headers: { "Content-Type": "application/json" },
@@ -63,9 +70,7 @@ const Home = () => {
 			const filterData = task.filter(
 				(itemActual) => itemActual !== task[index]
 			);
-			console.log("item", index);
 			setTask(filterData);
-
 			putData(filterData);
 		}
 	}
@@ -74,21 +79,26 @@ const Home = () => {
 		<div className="container border border-dark text-center w-50 mt-5">
 			<h1 className="fw-light">To-Do List</h1>
 			<h3 className="fw-light">Tasks: {task.length}</h3>
-			<div className="input-group mb-3">
-				<input
-					className="form-control"
-					type="text"
-					placeholder="add a task!"
-					/* onKeyPress={(e) => {
-						addTask(e);
-					}} */
-				/>
-				{/* ------------------------------------------------------------------------------REVISAR BOTON */}
-				<button className="btn btn-outline-secondary" onClick={addTask}>
-					Add
-				</button>
-			</div>
-
+			<form>
+				<div className="input-group mb-3">
+					<input
+						type="text"
+						className="form-control"
+						placeholder="Add a task!"
+						onKeyPress={(e) => {
+							addTask(e);
+						}}
+					/>
+					<button
+						onClick={(e) => {
+							handleSubmit(e);
+						}}
+						className="btn btn-outline-secondary"
+						type="button">
+						+
+					</button>
+				</div>
+			</form>
 			{task.map((element, index) => {
 				return (
 					<div
