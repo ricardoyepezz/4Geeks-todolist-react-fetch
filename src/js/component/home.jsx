@@ -14,15 +14,7 @@ const Home = () => {
 	// funcion para traer tasks de api (GET)----------------------------------------------------------------
 
 	function getData() {
-		var requestOptions = {
-			method: "GET",
-			headers: { "Content-Type": "application/json" },
-		};
-
-		fetch(
-			"https://assets.breatheco.de/apis/fake/todos/user/ricardoyepez",
-			requestOptions
-		)
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/ricardoyepez")
 			.then((response) => response.json())
 			.then((result) => {
 				console.log(result);
@@ -32,20 +24,24 @@ const Home = () => {
 	}
 
 	// funcion para agregar tasks a api (PUT)----------------------------------------------------------------
-	function addTask(e) {
+	const addTask = (e) => {
 		if (e.key === "Enter" && e.target.value !== "") {
 			//si pulso enter al introducir texto en input agrega value a label y false a done
-			const addNewTask = { label: e.target.value, done: false };
+			//const addNewTask = { label: e.target.value, done: false };
 			//luego concatena nuevo array addNewTask en mi estado
-			let newArray = task.concat(addNewTask);
+			//let newArray = task.concat(addNewTask);
 			//ejecuta metodo PUT con nuevo array (agrega nuevo array a api)
-			putData(newArray);
 			//deja en blanco el input
+			setTask([...task, { label: e.target.value, done: false }]);
+			let newArray = [...task, { label: e.target.value, done: false }];
+			putData(newArray);
 			e.target.value = "";
 		}
-	}
-	function putData(newArray) {
-		var requestOptions = {
+	};
+	console.log(task);
+	const putData = (newArray) => {
+		console.log("putData", task);
+		let requestOptions = {
 			method: "PUT",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(newArray),
@@ -58,7 +54,7 @@ const Home = () => {
 			.then((response) => response.json())
 			.then((result) => {})
 			.catch((error) => console.log("error", error));
-	}
+	};
 	// funcion para eliminar tasks de api (PUT)----------------------------------------------------------------
 	function delTask(index) {
 		if (index > -1) {
@@ -69,6 +65,7 @@ const Home = () => {
 			);
 			console.log("item", index);
 			setTask(filterData);
+
 			putData(filterData);
 		}
 	}
@@ -79,12 +76,17 @@ const Home = () => {
 			<h3 className="fw-light">Tasks: {task.length}</h3>
 			<div className="input-group mb-3">
 				<input
+					className="form-control"
 					type="text"
 					placeholder="add a task!"
-					onKeyPress={(e) => {
+					/* onKeyPress={(e) => {
 						addTask(e);
-					}}
+					}} */
 				/>
+				{/* ------------------------------------------------------------------------------REVISAR BOTON */}
+				<button className="btn btn-outline-secondary" onClick={addTask}>
+					Add
+				</button>
 			</div>
 
 			{task.map((element, index) => {
