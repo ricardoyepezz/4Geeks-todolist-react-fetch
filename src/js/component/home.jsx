@@ -31,10 +31,10 @@ const Home = () => {
 			//luego concatena nuevo array addNewTask en mi estado
 			//let newArray = task.concat(addNewTask);
 			//ejecuta metodo PUT con nuevo array (agrega nuevo array a api)
-			//deja en blanco el input
 			setTask([...task, { label: e.target.value, done: false }]);
 			let newArray = [...task, { label: e.target.value, done: false }];
 			putData(newArray);
+			//deja en blanco el input
 			e.target.value = "";
 		}
 	};
